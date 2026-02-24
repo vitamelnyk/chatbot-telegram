@@ -1,4 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
+import { botMessages } from "./data.js";
 
 const token = '8683239261:AAGkm8sY8S7Fw48chl2EIAdDoYyr_5zaqmY';
 
@@ -17,11 +18,11 @@ const start = () => {
         const chatId = msg.chat.id;
 
         if (text === '/start') {
-            return bot.sendMessage(chatId, `Привіт ${msg.from.first_name} ${msg.from.last_name}!\nОберіть категорію запитання:`, {
+            return bot.sendMessage(chatId, `Привіт ${msg.from.first_name}!\nОберіть категорію запитання:`, {
                 reply_markup: {
                     keyboard: [
-                        ['Python', 'JavaScript', 'API', 'Помилки'],
-                        ['Git', 'Linux', 'Алгоритми', 'Структура даних']
+                        ['🟦 Python', '🟨 JavaScript', '🌐 API', '🛑 Помилки'],
+                        ['🐙 Git', '🐧 Linux', '📈 Алгоритми', '📝 Структура даних']
                     ],
                     resize_keyboard: true,
                     one_time_keyboard: false
@@ -33,13 +34,13 @@ const start = () => {
             return bot.sendMessage(chatId, `Розробник "DevHelperBot" Віктор`)
         }
 
-        if (text === 'Помилки') {
-            return bot.sendMessage(chatId, 'Оберіть помилку, яка вас цікавить:', {
+        if (text === '🛑 Помилки') {
+            return bot.sendMessage(chatId, 'Оберіть помилку, яка вас цікавить ⬇️', {
                 reply_markup: {
                     keyboard: [
-                        ['SyntaxError', 'TypeError'],
-                        ['NameError', 'Інше'],
-                        ['Назад']
+                        ['✍️ SyntaxError', '🧩 TypeError'],
+                        ['🔍 NameError', '🧰 Інше'],
+                        ['🔙 Назад']
                     ],
                     resize_keyboard: true,
                     one_time_keyboard: false
@@ -47,11 +48,46 @@ const start = () => {
             })
         }
 
-        if(text === 'SyntaxError') {
-            return bot.sendMessage(chatId, `❌ SyntaxError — помилка синтаксису.\nКод записаний неправильно, тому інтерпретатор не може його прочитати.\nПеревірте дужки (), {}, [], лапки, двокрапки або крапки з комою,\nа також правильність конструкцій if, for, while, function.`)
+        if(text === '🟨 JavaScript') {
+            return bot.sendMessage(chatId, 'Оберіть один із варіантів нижче ⬇️', {
+                reply_markup: {
+                    keyboard: [
+                        ['🧩 Функція', '🔀 Розгалуження'],
+                        ['🔁 Цикли', '🧰 Інше'],
+                        ['🔙 Назад']
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: false
+                }
+            })
         }
 
-        if (text === 'Назад') {
+        if(text === '✍️ SyntaxError') {
+            return bot.sendMessage(chatId, botMessages.errors.syntaxError)
+        }
+
+        if(text === '🧩 TypeError') {
+            return bot.sendMessage(chatId, botMessages.errors.typeError)
+        }
+
+        if(text === '🔍 NameError') {
+            return bot.sendMessage(chatId, botMessages.errors.nameError)
+        }
+
+        if(text === '🧰 Інше') {
+            return bot.sendMessage(chatId, botMessages.errors.other, {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {text: 'JavaScript', url: botMessages.errors.linkJs},
+                            {text: 'Python', url: botMessages.errors.linkPy}
+                        ]
+                    ]
+                }
+            })
+        }
+
+        if (text === '🔙 Назад') {
             return chatMainMenu(chatId);
         }
         
@@ -63,8 +99,8 @@ const chatMainMenu = (chatId) => {
     bot.sendMessage(chatId, 'Оберіть категорію запитання:', {
         reply_markup: {
             keyboard: [
-                ['Python', 'JavaScript', 'API', 'Помилки'],
-                ['Git', 'Linux', 'Алгоритми', 'Структура даних']
+                ['🟦 Python', '🟨 JavaScript', '🌐 API', '🛑 Помилки'],
+                ['🐙 Git', '🐧 Linux', '📈 Алгоритми', '📝 Структура даних']
             ],
             resize_keyboard: true,
             one_time_keyboard: false
