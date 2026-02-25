@@ -4,7 +4,8 @@ import { botMessages } from "./data.js";
 const token = '8683239261:AAGkm8sY8S7Fw48chl2EIAdDoYyr_5zaqmY';
 
 const bot = new TelegramBot(token, { polling: true });
-
+const userCategory = {};
+const botOther = {};
 
 const start = () => {
 
@@ -21,8 +22,8 @@ const start = () => {
             return bot.sendMessage(chatId, `Привіт ${msg.from.first_name}!\nОберіть категорію запитання:`, {
                 reply_markup: {
                     keyboard: [
-                        ['🟦 Python', '🟨 JavaScript', '🌐 API', '🛑 Помилки'],
-                        ['🐙 Git', '🐧 Linux', '📈 Алгоритми', '📝 Структура даних']
+                        ['🟦 Python', '🟨 JavaScript', '🌐 API'],
+                        ['🐙 Git', '🐧 Linux', '🛑 Помилки']
                     ],
                     resize_keyboard: true,
                     one_time_keyboard: false
@@ -35,6 +36,8 @@ const start = () => {
         }
 
         if (text === '🛑 Помилки') {
+            userCategory[chatId] = 'помилки';
+            botOther[chatId] = botMessages.errors;
             return bot.sendMessage(chatId, 'Оберіть помилку, яка вас цікавить ⬇️', {
                 reply_markup: {
                     keyboard: [
@@ -48,7 +51,9 @@ const start = () => {
             })
         }
 
-        if(text === '🟨 JavaScript') {
+        if (text === '🟨 JavaScript') {
+            userCategory[chatId] = 'javascript';
+            botOther[chatId] = botMessages.javaScript;
             return bot.sendMessage(chatId, 'Оберіть один із варіантів нижче ⬇️', {
                 reply_markup: {
                     keyboard: [
@@ -62,35 +67,59 @@ const start = () => {
             })
         }
 
-        if(text === '✍️ SyntaxError') {
+        if (text === '✍️ SyntaxError') {
             return bot.sendMessage(chatId, botMessages.errors.syntaxError)
         }
 
-        if(text === '🧩 TypeError') {
+        if (text === '🧩 TypeError') {
             return bot.sendMessage(chatId, botMessages.errors.typeError)
         }
 
-        if(text === '🔍 NameError') {
+        if (text === '🔍 NameError') {
             return bot.sendMessage(chatId, botMessages.errors.nameError)
         }
 
-        if(text === '🧰 Інше') {
-            return bot.sendMessage(chatId, botMessages.errors.other, {
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            {text: 'JavaScript', url: botMessages.errors.linkJs},
-                            {text: 'Python', url: botMessages.errors.linkPy}
+        if (text === '🧩 Функція') {
+            return bot.sendMessage(chatId, botMessages.javaScript.funcJs)
+        }
+
+        if (text === '🔀 Розгалуження') {
+            return bot.sendMessage(chatId, botMessages.javaScript.branchingJs)
+        }
+
+        if (text === '🔁 Цикли') {
+            return bot.sendMessage(chatId, botMessages.javaScript.loopJs)
+        }
+
+        if (text === '🧰 Інше') {
+            if (userCategory[chatId] === 'помилки') {
+                return bot.sendMessage(chatId, botMessages.errors.other, {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: 'JavaScript', url: botMessages.errors.linkJs },
+                                { text: 'Python', url: botMessages.errors.linkPy }
+                            ]
                         ]
-                    ]
-                }
-            })
+                    }
+                })
+            } else {
+                return bot.sendMessage(chatId, botOther[chatId].other, {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: 'Перейти до документації', url: botOther[chatId].link },
+                            ]
+                        ]
+                    }
+                })
+            }
         }
 
         if (text === '🔙 Назад') {
             return chatMainMenu(chatId);
         }
-        
+
         return bot.sendMessage(chatId, 'Будь ласка натисніть одну з кнопок меню:')
     })
 }
@@ -99,8 +128,8 @@ const chatMainMenu = (chatId) => {
     bot.sendMessage(chatId, 'Оберіть категорію запитання:', {
         reply_markup: {
             keyboard: [
-                ['🟦 Python', '🟨 JavaScript', '🌐 API', '🛑 Помилки'],
-                ['🐙 Git', '🐧 Linux', '📈 Алгоритми', '📝 Структура даних']
+                ['🟦 Python', '🟨 JavaScript', '🌐 API'],
+                ['🐙 Git', '🐧 Linux', '🛑 Помилки']
             ],
             resize_keyboard: true,
             one_time_keyboard: false
