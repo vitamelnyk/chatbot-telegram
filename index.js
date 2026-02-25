@@ -67,6 +67,70 @@ const start = () => {
             })
         }
 
+        if (text === '🐙 Git') {
+            userCategory[chatId] = 'git';
+            botOther[chatId] = botMessages.gitMain;
+            return bot.sendMessage(chatId, 'Оберіть один із варіантів нижче ⬇️', {
+                reply_markup: {
+                    keyboard: [
+                        ['📂 git init', '📥 git clone'],
+                        ['📤 git push', '🧰 Інше'],
+                        ['🔙 Назад']
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: false
+                }
+            })
+        }
+
+        if (text === '🐧 Linux') {
+            userCategory[chatId] = 'linux';
+            botOther[chatId] = botMessages.linuxMain;
+            return bot.sendMessage(chatId, 'Оберіть один із варіантів нижче ⬇️', {
+                reply_markup: {
+                    keyboard: [
+                        ['📂 ls', '📁 cd'],
+                        ['📝 cat', '🧰 Інше'],
+                        ['🔙 Назад']
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: false
+                }
+            })
+        }
+
+        if (text === '🟦 Python') {
+            userCategory[chatId] = 'python';
+            botOther[chatId] = botMessages.python;
+            return bot.sendMessage(chatId, 'Оберіть один із варіантів нижче ⬇️', {
+                reply_markup: {
+                    keyboard: [
+                        ['🧩 Функція', '🔀 Розгалуження'],
+                        ['🔁 Цикли', '🧰 Інше'],
+                        ['🔙 Назад']
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: false
+                }
+            })
+        }
+
+        if (text === '🌐 API') {
+            userCategory[chatId] = 'api';
+            botOther[chatId] = botMessages.apiMain;
+            return bot.sendMessage(chatId, 'Оберіть один із варіантів нижче ⬇️', {
+                reply_markup: {
+                    keyboard: [
+                        ['🔗 Що таке API', '⚡ REST API'],
+                        ['📝 HTTP методи', '🧰 Інше'],
+                        ['🔙 Назад']
+                    ],
+                    resize_keyboard: true,
+                    one_time_keyboard: false
+                }
+            })
+        }
+
         if (text === '✍️ SyntaxError') {
             return bot.sendMessage(chatId, botMessages.errors.syntaxError)
         }
