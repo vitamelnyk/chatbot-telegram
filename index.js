@@ -143,16 +143,64 @@ const start = () => {
             return bot.sendMessage(chatId, botMessages.errors.nameError)
         }
 
+        if(text === '🔗 Що таке API') {
+            return bot.sendMessage(chatId, botMessages.apiMain.api)
+        }
+
+        if(text === '⚡ REST API') {
+            return bot.sendMessage(chatId, botMessages.apiMain.rest_api)
+        }
+
+        if(text === '📝 HTTP методи') {
+            return bot.sendMessage(chatId, botMessages.apiMain.http_method)
+        }
+
+        if(text === '📂 ls') {
+            return bot.sendMessage(chatId, botMessages.linuxMain.ls_l)
+        }
+
+        if(text === '📁 cd') {
+            return bot.sendMessage(chatId, botMessages.linuxMain.cd_l)
+        }
+
+        if(text === '📝 cat') {
+            return bot.sendMessage(chatId, botMessages.linuxMain.cat_l)
+        }
+
+        if(text === '📂 git init') {
+            return bot.sendMessage(chatId, botMessages.gitMain.init_g)
+        }
+
+        if(text === '📥 git clone') {
+            return bot.sendMessage(chatId, botMessages.gitMain.clone_g)
+        }
+
+        if(text === '📤 git push') {
+            return bot.sendMessage(chatId, botMessages.gitMain.push_g)
+        }
+
         if (text === '🧩 Функція') {
-            return bot.sendMessage(chatId, botMessages.javaScript.funcJs)
+            if(userCategory[chatId] != 'python') {
+                return bot.sendMessage(chatId, botMessages.javaScript.funcJs)
+            } else {
+                return bot.sendMessage(chatId, botMessages.python.funcPy)
+            }
         }
 
         if (text === '🔀 Розгалуження') {
-            return bot.sendMessage(chatId, botMessages.javaScript.branchingJs)
+            if(userCategory[chatId] != 'python') {
+                return bot.sendMessage(chatId, botMessages.javaScript.branchingJs)
+            } else {
+                return bot.sendMessage(chatId, botMessages.python.branchingPy)
+            }
         }
 
         if (text === '🔁 Цикли') {
-            return bot.sendMessage(chatId, botMessages.javaScript.loopJs)
+            if(userCategory[chatId] != 'python') {
+                return bot.sendMessage(chatId, botMessages.javaScript.loopJs)
+            } else {
+                return bot.sendMessage(chatId, botMessages.python.loopPy)
+            }
         }
 
         if (text === '🧰 Інше') {

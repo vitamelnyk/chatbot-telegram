@@ -29,7 +29,7 @@ export const botMessages = {
     },
     python: {
         funcPy: `🟢 Функція — це іменований блок коду, який виконує певне завдання і може викликатися багато разів.
-            \nУ Python функції оголошуються за допомогою ключового слова def.\n\nПриклад:\ndef greet(name):\n    return f\"Привіт, {name}!\"\n\nВиклик:\nprint(greet(\"Віктор\"))
+            \nУ Python функції оголошуються за допомогою ключового слова def.\n\nПриклад:\ndef greet(name):\n    return f\"Привіт, {name}!\"\n\nВиклик:\nprint(greet(\"Bob\"))
         `,
         branchingPy: `🟢 Розгалуження дозволяє виконувати різні дії залежно від умови.
             \nУ Python для цього використовують if, elif, else.\n\nПриклад:\nage = 18\nif age >= 18:\n    print(\"Дорослий\")\nelif age >= 12:\n    print(\"Підліток\")\nelse:\n    print(\"Дитина\")
