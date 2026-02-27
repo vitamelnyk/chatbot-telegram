@@ -10,7 +10,6 @@ const botOther = {};
 const start = () => {
 
     bot.setMyCommands([
-        { command: '/start', description: 'Початкове привітаня' },
         { command: '/info', description: 'Отримати інформацію користувача' }
     ])
 
@@ -19,7 +18,7 @@ const start = () => {
         const chatId = msg.chat.id;
 
         if (text === '/start') {
-            return bot.sendMessage(chatId, `Привіт ${msg.from.first_name}!\nОберіть категорію запитання:`, {
+            return bot.sendMessage(chatId, `👋 Привіт, ${msg.from.first_name}!\nЯ твій помічник з програмування 🤖💻\nОбери категорію з меню, і я покажу доступні питання 👇`, {
                 reply_markup: {
                     keyboard: [
                         ['🟦 Python', '🟨 JavaScript', '🌐 API'],
@@ -32,7 +31,7 @@ const start = () => {
         }
 
         if (text === '/info') {
-            return bot.sendMessage(chatId, `Розробник "DevHelperBot" Віктор`)
+            return bot.sendMessage(chatId, `Розробник "DevHelperBot" Віктор Мельник`)
         }
 
         if (text === '🛑 Помилки') {
@@ -232,12 +231,12 @@ const start = () => {
             return chatMainMenu(chatId);
         }
 
-        return bot.sendMessage(chatId, 'Будь ласка натисніть одну з кнопок меню:')
+        return bot.sendMessage(chatId, 'Будь ласка натисніть одну з кнопок меню ⬇️')
     })
 }
 
 const chatMainMenu = (chatId) => {
-    bot.sendMessage(chatId, 'Оберіть категорію запитання:', {
+    bot.sendMessage(chatId, 'Обери категорію, яка тебе цікавить ⬇️', {
         reply_markup: {
             keyboard: [
                 ['🟦 Python', '🟨 JavaScript', '🌐 API'],
