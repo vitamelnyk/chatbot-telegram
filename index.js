@@ -1,7 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
 import { botMessages } from "./data.js";
+import dotenv from 'dotenv'
+dotenv.config()
 
-const token = '8683239261:AAGkm8sY8S7Fw48chl2EIAdDoYyr_5zaqmY';
+const token = process.env.TOKEN_BOT;
 
 const bot = new TelegramBot(token, { polling: true });
 const userCategory = {};
