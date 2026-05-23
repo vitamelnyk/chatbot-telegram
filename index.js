@@ -12,7 +12,7 @@ const botOther = {};
 const start = () => {
 
     bot.setMyCommands([
-        { command: '/info', description: 'Отримати інформацію користувача' }
+        { command: '/info', description: 'Отримати інформацію' }
     ])
 
     bot.on('message', async msg => {
