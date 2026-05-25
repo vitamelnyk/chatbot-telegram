@@ -1,9 +1,13 @@
 import TelegramBot from "node-telegram-bot-api";
+import fetch from "node-fetch";
 import { botMessages } from "./data.js";
 import dotenv from 'dotenv'
 dotenv.config()
 
 const token = process.env.TOKEN_BOT;
+
+process.on('uncaughtException', console.error);
+process.on('unhandledRejection', console.error);
 
 const bot = new TelegramBot(token, { polling: true });
 const userCategory = {};
@@ -144,44 +148,44 @@ const start = () => {
             return bot.sendMessage(chatId, botMessages.errors.nameError)
         }
 
-        if(text === '🔗 Що таке API') {
+        if (text === '🔗 Що таке API') {
             return bot.sendMessage(chatId, botMessages.apiMain.api)
         }
 
-        if(text === '⚡ REST API') {
+        if (text === '⚡ REST API') {
             return bot.sendMessage(chatId, botMessages.apiMain.rest_api)
         }
 
-        if(text === '📝 HTTP методи') {
+        if (text === '📝 HTTP методи') {
             return bot.sendMessage(chatId, botMessages.apiMain.http_method)
         }
 
-        if(text === '📂 ls') {
+        if (text === '📂 ls') {
             return bot.sendMessage(chatId, botMessages.linuxMain.ls_l)
         }
 
-        if(text === '📁 cd') {
+        if (text === '📁 cd') {
             return bot.sendMessage(chatId, botMessages.linuxMain.cd_l)
         }
 
-        if(text === '📝 cat') {
+        if (text === '📝 cat') {
             return bot.sendMessage(chatId, botMessages.linuxMain.cat_l)
         }
 
-        if(text === '📂 git init') {
+        if (text === '📂 git init') {
             return bot.sendMessage(chatId, botMessages.gitMain.init_g)
         }
 
-        if(text === '📥 git clone') {
+        if (text === '📥 git clone') {
             return bot.sendMessage(chatId, botMessages.gitMain.clone_g)
         }
 
-        if(text === '📤 git push') {
+        if (text === '📤 git push') {
             return bot.sendMessage(chatId, botMessages.gitMain.push_g)
         }
 
         if (text === '🧩 Функція') {
-            if(userCategory[chatId] != 'python') {
+            if (userCategory[chatId] != 'python') {
                 return bot.sendMessage(chatId, botMessages.javaScript.funcJs)
             } else {
                 return bot.sendMessage(chatId, botMessages.python.funcPy)
@@ -189,7 +193,7 @@ const start = () => {
         }
 
         if (text === '🔀 Розгалуження') {
-            if(userCategory[chatId] != 'python') {
+            if (userCategory[chatId] != 'python') {
                 return bot.sendMessage(chatId, botMessages.javaScript.branchingJs)
             } else {
                 return bot.sendMessage(chatId, botMessages.python.branchingPy)
@@ -197,7 +201,7 @@ const start = () => {
         }
 
         if (text === '🔁 Цикли') {
-            if(userCategory[chatId] != 'python') {
+            if (userCategory[chatId] != 'python') {
                 return bot.sendMessage(chatId, botMessages.javaScript.loopJs)
             } else {
                 return bot.sendMessage(chatId, botMessages.python.loopPy)
@@ -233,7 +237,9 @@ const start = () => {
             return chatMainMenu(chatId);
         }
 
-        return bot.sendMessage(chatId, 'Будь ласка натисніть одну з кнопок меню ⬇️')
+        const aiResponse = await askOllama(text);
+
+        return bot.sendMessage(chatId, aiResponse);
     })
 }
 
@@ -248,6 +254,36 @@ const chatMainMenu = (chatId) => {
             one_time_keyboard: false
         }
     })
+}
+
+const askOllama = async (prompt) => {
+
+    const response = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: 'qwen2.5',
+            prompt: `
+                Ти Telegram бот по програмуванню.
+                Правила:
+                    - Відповідай ТІЛЬКИ українською мовою
+                    - Не використовуй російську
+                    - Пиши грамотно
+                    - Відповідай коротко і зрозуміло
+
+                Користувач: ${prompt}`,
+            stream: false,
+            options: {
+                temperature: 0.3
+            }
+        })
+    });
+
+    const data = await response.json();
+
+    return data.response;
 }
 
 start();
