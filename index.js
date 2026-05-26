@@ -237,9 +237,23 @@ const start = () => {
             return chatMainMenu(chatId);
         }
 
-        const aiResponse = await askOllama(text);
+        const typingInterval = setInterval(() => {
+            bot.sendChatAction(chatId, 'typing');
+        }, 4000);
 
-        return bot.sendMessage(chatId, aiResponse);
+        try {
+            await askOllamaStream(chatId, text);
+            clearInterval(typingInterval);
+
+        } catch (error) {
+
+            clearInterval(typingInterval);
+
+            console.error(error);
+
+            return bot.sendMessage(chatId, 'Помилка при відповіді AI');
+        }
+
     })
 }
 
@@ -256,7 +270,7 @@ const chatMainMenu = (chatId) => {
     })
 }
 
-const askOllama = async (prompt) => {
+const askOllamaStream = async (chatId, prompt) => {
 
     const response = await fetch('http://localhost:11434/api/generate', {
         method: 'POST',
@@ -274,16 +288,38 @@ const askOllama = async (prompt) => {
                     - Відповідай коротко і зрозуміло
 
                 Користувач: ${prompt}`,
-            stream: false,
+            stream: true,
             options: {
                 temperature: 0.3
             }
         })
     });
 
-    const data = await response.json();
+    const startMessage = await bot.sendMessage(chatId, '✍️ ...');
 
-    return data.response;
+    let fullText = '';
+
+    response.body.on('data', async (chunk) => {
+
+        const lines = chunk.toString().split('\n').filter(Boolean);
+
+        for (const line of lines) {
+
+            const data = JSON.parse(line);
+
+            if (data.response) {
+
+                fullText += data.response;
+
+                try {
+                    await bot.editMessageText(fullText, {
+                        chat_id: chatId,
+                        message_id: startMessage.message_id
+                    });
+                } catch (e) { }
+            }
+        }
+    });
 }
 
 start();
